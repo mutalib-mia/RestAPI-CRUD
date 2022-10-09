@@ -21,7 +21,7 @@ class StudentsClassController extends Controller
 
     public function Store(Request $request){
         $validateData = $request->validate([
-            'class_name' =>'required|max:25'
+            'class_name' =>'required|unique:students_classes|max:25'
         ]);
 
         StudentsClass::insert([
@@ -34,6 +34,18 @@ class StudentsClassController extends Controller
     public function Edit($id){
         $studentClass = StudentsClass::findOrFail($id);
         return response()->json($studentClass);
+    }
+
+    public function update(Request $request, $id){
+        StudentsClass::findOrFail($id)->update([
+            'class_name'=> $request->class_name
+        ]);
+        return response('Student Class Updated Successfully');
+    }
+
+    public function delete($id){
+        StudentsClass::findOrFail($id)->delete();
+        return response('Student Class Deleted Successfully');
     }
 
 
